@@ -27,6 +27,7 @@ class Pattern:
     
     def __repr__(self):
         return f"Pattern({self.segments})"
+    
 
 class Object:
     features = []

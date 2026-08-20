@@ -108,7 +108,7 @@ def is_more_general(p1, p2):
     return True
 
 
-        
+
 
 # objc = [2, 3, 4]
 # s1 = Segment(1, 6)
