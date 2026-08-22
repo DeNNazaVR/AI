@@ -9,12 +9,14 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
+
 random_seed = 1312562
 random.seed(random_seed)
 
 #black box model trainings
 
 
+#for this random_seed all parameters, are between [-4, 4.1]
 x, y = make_classification(
     n_samples=1000,
     n_classes=2,
@@ -25,7 +27,14 @@ x, y = make_classification(
     flip_y=0.1,
     random_state=random_seed
 )
-
+# mns = [1e9] * 5
+# mxs = [-1e9] * 5
+# for i in x:
+#     for j in range(5):
+#         mns[j] = min(mns[j], i[j])
+#         mxs[j] = max(mxs[j], i[j])
+# print(mns)
+# print(mxs)
 
 x_train, x_test, y_train, y_test = train_test_split(
     x,
@@ -413,7 +422,7 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.axis("off")
     plt.tight_layout()
     plt.show()
-need_purity = 0.5
+need_purity = 0.2
 need_support = 10
 
 def get_final_explanation(g, need_purity, need_support):
@@ -421,7 +430,8 @@ def get_final_explanation(g, need_purity, need_support):
     for node in g.nodes:
         purity = g.nodes[node]["purity"]
         support = g.nodes[node]["support"]
-        take.append(node)
+        if purity >= need_purity and support >= need_support:
+            take.append(node)
     mx_depth_nodes = []
     for node in take:
         can_generalize = False
@@ -448,7 +458,7 @@ def get_final_explanation(g, need_purity, need_support):
 feature_std = np.std(x_train, axis=0)
 
 features_len = 5
-features =  [4, -1, 8, -0.57, 1]
+features = [0.6760665728238865, -0.5033309185654469, 0.4313305841642763, -2.018932779075593, 0.2929281424970152]
 o = Object(features)
 
 local_samples = gen_neighboors(o, feature_std)
@@ -484,3 +494,4 @@ def print_explanation(explanation):
 print_explanation(explanation)
 
 visualize_local_generalization_graph(g, explanation)
+
