@@ -87,16 +87,18 @@ def calc_purity(p, local_samples, local_predictions, weights, o):
     return have / s
 
 def build_candidate_patterns(o, local_samples):
-    cnt = 20
+    cnt = 30
     ans = []
     n = len(local_samples)
+    k_range = 25
+    ind_range = 100
     for i in range(cnt):
         take = []
-        k = random.randint(1, 25)
+        k = random.randint(1, k_range)
         for j in range(k):
-            ind = random.randint(1, 100)
+            ind = random.randint(1, ind_range)
             while ind in take:
-                ind = random.randint(1, n)
+                ind = random.randint(1, ind_range)
             take.append(ind)
         p = object_to_pattern(o)
         for ind in take:
@@ -250,8 +252,8 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.axis("off")
     plt.tight_layout()
     plt.show()
-need_purity = 0.2
-need_support = 10
+need_purity = 0.5
+need_support = 5
 
 def get_final_explanation(g, need_purity, need_support):
     take = []
@@ -261,14 +263,18 @@ def get_final_explanation(g, need_purity, need_support):
         if purity >= need_purity and support >= need_support:
             take.append(node)
     mx_depth_nodes = []
+
     for node in take:
-        can_generalize = False
-        for next_node in g.successors(node):
-            if next_node in take:
-                can_generalize = True
+        have_nxt = False
+        for other in take:
+            if node == other:
+                continue
+            if nx.has_path(g, node, other):
+                have_nxt = True
                 break
-        if not can_generalize:
+        if not have_nxt:
             mx_depth_nodes.append(node)
+
     if len(mx_depth_nodes) == 0:
         return None
     best = mx_depth_nodes[0]
