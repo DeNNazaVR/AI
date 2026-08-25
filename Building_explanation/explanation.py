@@ -105,6 +105,31 @@ def build_candidate_patterns(o, local_samples):
             p = meet(p, object_to_pattern(local_samples[ind - 1]))
         p = closure(p, local_samples + [o])
         ans.append(p)
+    K = 5
+    for mask in range(1 << K):
+        p = object_to_pattern(o)
+        for i in range(K):
+            if (mask >> i) & 1:
+                p = meet(p, object_to_pattern(local_samples[i]))
+        p = closure(p, local_samples + [o])
+        ans.append(p)
+    lim_len = 10
+    for I in range(1,lim_len + 1):
+        cnt = min(10, (n + i - 1) // i)
+
+        for i in range(cnt):
+            take = []
+            k = I
+            for j in range(k):
+                ind = random.randint(1, ind_range)
+                while ind in take:
+                    ind = random.randint(1, ind_range)
+                take.append(ind)
+            p = object_to_pattern(o)
+            for ind in take:
+                p = meet(p, object_to_pattern(local_samples[ind - 1]))
+            p = closure(p, local_samples + [o])
+            ans.append(p)
     return ans
 
 
@@ -252,8 +277,9 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.axis("off")
     plt.tight_layout()
     plt.show()
-need_purity = 0.5
-need_support = 5
+
+need_purity = 0.6
+need_support = 15
 
 def get_final_explanation(g, need_purity, need_support):
     take = []

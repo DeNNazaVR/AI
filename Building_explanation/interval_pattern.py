@@ -77,8 +77,6 @@ def meet(p1, p2):
     return ans
 
 def contains_object(p, o):
-    if len(p.segments) < len(o.features):
-        return False
     for i in range(len(o.features)):
         if not p.segments[i].is_point_in(o.features[i]):
             return False
