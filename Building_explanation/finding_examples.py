@@ -2,31 +2,22 @@ from explanation import Object, model, x_train
 
 
 INF32 = 1e9
-# mx = -INF32
-# mn = INF32
-# o1 = Object([])
-# o2 = Object([])
-# for i in x_train:
-#     proba = model.predict_proba([i])[0]
-#     d = abs(proba[0] - proba[1])
-#     if d > mx:
-#         mx = d
-#         o1 = Object(i.tolist())
-#     if d < mn:
-#         mn = d
-#         o2 = Object(i.tolist())
-# print(o1.features)
-# print(mx)
-# print(o2)
-# print(mn) 
+mx = -INF32
 mn = INF32
-o1 = Object([])
+ind1 = 0
+ind2 = 0
+ind = 0
 for i in x_train:
     proba = model.predict_proba([i])[0]
     d = abs(proba[0] - proba[1])
-    d1 = abs(0.45 - d)
-    if d1 < mn:
-        mn = d1
-        o1 = Object(i.tolist())
-print(o1)
+    if d > mx:
+        mx = d
+        ind1 = ind
+    if d < mn:
+        mn = d
+        ind2 = ind
+    ind += 1
+print(mx)
+print(ind1)
 print(mn)
+print(ind2)

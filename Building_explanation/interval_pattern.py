@@ -26,6 +26,26 @@ class Pattern:
     
     def __repr__(self):
         return f"Pattern({self.segments})"
+    def __eq__(self, other):
+        if not isinstance(other, Pattern):
+            return False
+
+        if len(self.segments) != len(other.segments):
+            return False
+
+        for i in range(len(self.segments)):
+            if self.segments[i].l != other.segments[i].l:
+                return False
+            if self.segments[i].r != other.segments[i].r:
+                return False
+
+        return True
+
+    def __hash__(self):
+        vals = []
+        for s in self.segments:
+            vals.append((s.l, s.r))
+        return hash(tuple(vals))
 
 class Object:
     features = []
@@ -33,9 +53,9 @@ class Object:
         self.features = features1
 
 
-def point_to_pattern(p):
+def object_to_pattern(o):
     segs = []
-    for el in p:
+    for el in o.features:
         s = Segment(el, el)
         segs.append(s)
     ans = Pattern(segs)
@@ -43,8 +63,6 @@ def point_to_pattern(p):
 
 def meet(p1, p2):
     segs = []
-    if len(p1.segments) > len(p2.segments):
-        p1, p2 = p2, p1
     sz = len(p1.segments)
     for i in range(sz):
         l1 = p1.segments[i].l
@@ -55,12 +73,10 @@ def meet(p1, p2):
         r = max(r1, r2)
         s = Segment(l, r)
         segs.append(s)
-    for i in range(sz, len(p2.segments)):
-        segs.append(p2.segments[i])
     ans = Pattern(segs)
     return ans
 
-def covers(p, o):
+def contains_object(p, o):
     if len(p.segments) < len(o.features):
         return False
     for i in range(len(o.features)):
@@ -71,7 +87,7 @@ def covers(p, o):
 def extent(p, local_samples):
     ans = []
     for obj in local_samples:
-        if covers(p, obj):
+        if contains_object(p, obj):
             ans.append(obj)
     return ans
 
