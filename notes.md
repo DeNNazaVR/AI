@@ -19,7 +19,7 @@ Support: 84
 Coverage: 0.084
 Purity: 0.9812451090035725
 Predicted class: 1
-10. The worst object still number 141 from x_train
+10. The worst object still number 141 from x_train(Testing on the worst object for model in x_test/x, got better result than the worst object in x_train)
 11. Got this explanation on testing the best object from x_test(number 3):
 Support: 387
 Coverage: 0.387

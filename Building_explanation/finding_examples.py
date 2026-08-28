@@ -7,7 +7,7 @@ mn = INF32
 ind1 = 0
 ind2 = 0
 ind = 0
-for i in x_test:
+for i in x_train:
     proba = model.predict_proba([i])[0]
     d = abs(proba[0] - proba[1])
     if d > mx:
@@ -21,3 +21,17 @@ print(mx)
 print(ind1)
 print(mn)
 print(ind2)
+mn = INF32
+need = 0.64
+ind3 = 0
+ind = 0
+for i in x_train:
+    proba = model.predict_proba([i])[0]
+    d = abs(proba[0] - proba[1])
+    d1 = abs(d - need)
+    if d1 < mn:
+        mn = d1
+        ind3 = ind
+    ind += 1
+print(mn)
+print(ind3)

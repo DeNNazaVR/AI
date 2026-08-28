@@ -296,7 +296,7 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.show()
 
 need_purity = 0.6
-need_support = 80
+need_support = 375
 
 def get_final_explanation(g, need_purity, need_support):
     take = []
@@ -334,7 +334,7 @@ def get_final_explanation(g, need_purity, need_support):
 
 feature_std = np.std(x_train, axis=0)
 
-test_ind = 141
+test_ind = 198
 o = Object(x_train[test_ind].tolist())
 
 local_samples = gen_neighboors(o, feature_std)
