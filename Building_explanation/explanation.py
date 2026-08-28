@@ -87,11 +87,11 @@ def calc_purity(p, local_samples, local_predictions, weights, o):
     return have / s
 
 def build_candidate_patterns(o, local_samples):
-    cnt = 30
+    cnt = 60
     ans = []
     n = len(local_samples)
-    k_range = 25
-    ind_range = 100
+    k_range = 50
+    ind_range = 200
     for i in range(cnt):
         take = []
         k = random.randint(1, k_range)
@@ -105,7 +105,24 @@ def build_candidate_patterns(o, local_samples):
             p = meet(p, object_to_pattern(local_samples[ind - 1]))
         p = closure(p, local_samples + [o])
         ans.append(p)
-    K = 5
+    #trying to add more randomised patterns
+    cnt = 30
+    k_range = 100
+    ind_range = 500
+    for i in range(cnt):
+        take = []
+        k = random.randint(1, k_range)
+        for j in range(k):
+            ind = random.randint(1, ind_range)
+            while ind in take:
+                ind = random.randint(1, ind_range)
+            take.append(ind)
+        p = object_to_pattern(o)
+        for ind in take:
+            p = meet(p, object_to_pattern(local_samples[ind - 1]))
+        p = closure(p, local_samples + [o])
+        ans.append(p)
+    K = 8
     for mask in range(1 << K):
         p = object_to_pattern(o)
         for i in range(K):
@@ -113,7 +130,7 @@ def build_candidate_patterns(o, local_samples):
                 p = meet(p, object_to_pattern(local_samples[i]))
         p = closure(p, local_samples + [o])
         ans.append(p)
-    lim_len = 10
+    lim_len = 12
     for I in range(1,lim_len + 1):
         cnt = min(10, (n + i - 1) // i)
 
@@ -279,7 +296,7 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.show()
 
 need_purity = 0.6
-need_support = 15
+need_support = 80
 
 def get_final_explanation(g, need_purity, need_support):
     take = []

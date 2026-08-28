@@ -1,4 +1,4 @@
-from explanation import Object, model, x_train
+from explanation import Object, model, x, x_train, x_test
 
 
 INF32 = 1e9
@@ -7,7 +7,7 @@ mn = INF32
 ind1 = 0
 ind2 = 0
 ind = 0
-for i in x_train:
+for i in x_test:
     proba = model.predict_proba([i])[0]
     d = abs(proba[0] - proba[1])
     if d > mx:
