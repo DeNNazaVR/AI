@@ -67,13 +67,11 @@ class Node:
         rb=0,
         left=None,
         right=None,
-        predict=None
     ):
         self.ind = ind
         self.segment = Segment(lb, rb)
         self.left = left
         self.right = right
-        self.predict = predict
 
     def is_leaf(self):
         return self.left is None and self.right is None
@@ -99,9 +97,6 @@ class DecisionTree:
         self.root = root
 
 
-    def predict(self, o):
-        leaf = self.get_leaf(o)
-        return leaf.predict
 
 
     def get_path(self, o):
@@ -165,7 +160,6 @@ def is_more_general(tree1, tree2, o, local_samples):
 def build_candidate_tree(o, our_depth, max_depth, taken_inds, local_samples):
     if our_depth >= max_depth:
         empt = Node()
-        empt.predict = random.randint(0, 1)
         return empt
     ind = random.randint(0, len(o.features) - 1)
     while ind in taken_inds:
@@ -345,8 +339,8 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.tight_layout()
     plt.show()
 
-need_purity = 0.2
-need_support = 10
+need_purity = 0.6
+need_support = 80
 
 def get_final_explanation(g, need_purity, need_support):
     take = []

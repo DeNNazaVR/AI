@@ -25,3 +25,9 @@ Support: 387
 Coverage: 0.387
 Purity: 0.99999780733883
 Predicted class: 0
+12. Made explanation_decision_tree, and got the object on index 141 in x_train:
+Node: 49
+Support: 24
+Coverage: 0.024
+Purity: 0.9999898483616381
+Predicted class: 0
