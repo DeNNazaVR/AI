@@ -296,7 +296,7 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.show()
 
 need_purity = 0.6
-need_support = 300
+need_support = 80
 
 def get_final_explanation(g, need_purity, need_support):
     take = []
