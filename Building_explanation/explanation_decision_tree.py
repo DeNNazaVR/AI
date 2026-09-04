@@ -166,6 +166,24 @@ s1 *= s1
 ess = s1 / s2
 print("ess is: ", ess)
 
+our_class = f(o)
+weighted_sum = 0
+unweighted_sum = 0
+weighted_take = 0
+unweighted_take = 0
+
+for i in range(len(local_samples)):
+    weighted_sum += weights[i]
+    unweighted_sum += 1
+    if local_predictions[i] == our_class:
+        weighted_take += weights[i]
+        unweighted_take += 1
+local_neighborhood_weighted = weighted_take / weighted_sum
+local_neighborhood_unweighted = unweighted_take / unweighted_sum
+print("local_neighborhood_weighted", local_neighborhood_weighted)
+print("local_neighborhood_unweighted", local_neighborhood_unweighted)
+
+
 tree = DecisionTreeClassifier(
     max_depth=3,
     random_state=random_seed
