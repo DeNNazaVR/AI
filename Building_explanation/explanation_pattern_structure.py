@@ -387,6 +387,7 @@ candidate_patterns = get_useful_candidate_patterns(candidate_patterns)
 
 g = build_local_generalization_graph(candidate_patterns, local_samples, local_predictions, weights, o)
 explanation = get_final_explanation(g, need_purity, need_support)
+
 def print_explanation(explanation):
     print("Node:", explanation)
     print("Pattern:", g.nodes[explanation]["pattern"])
@@ -395,7 +396,45 @@ def print_explanation(explanation):
     print("Purity:", g.nodes[explanation]["purity"])
     print("Predicted class:", g.nodes[explanation]["predicted_class"])
     print("Description:", g.nodes[explanation]["description"])
+
+
+INF = float("inf")
+
+def reduct_params(p1, need_extent):
+    ind = -1
+    for seg in p1.segments:
+        ind += 1
+        pl = seg.l
+        pr = seg.r
+        p1.segments[ind].l = -INF
+        p1.segments[ind].r = INF
+        nxt_extent = extent(p1, local_samples)
+        if nxt_extent != need_extent:
+            p1.segments[ind].l = pl
+            p1.segments[ind].r = pr
+
 print_explanation(explanation)
+
+p = g.nodes[explanation]["pattern"]
+
+p1 = Pattern([
+    Segment(seg.l, seg.r)
+    for seg in p.segments
+])
+
+need_extent = extent(p1, local_samples)
+reduct_params(p1, need_extent)
+
+print("Reducted explanation:")
+
+cnt_expl = 0
+
+for i in range(len(p1.segments)):
+    if p1.segments[i].l != -INF or p1.segments[i].r != INF:
+        print("feature:", i + 1, p1.segments[i].l, p1.segments[i].r)
+        cnt_expl += 1
+
+print("Explanation length:", cnt_expl)
 
 visualize_local_generalization_graph(g, explanation)
 

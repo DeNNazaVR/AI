@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from interval_pattern import Segment, Object
 from local_neighborhood import gen_neighboors, get_dist, get_weights
 from sklearn.tree import DecisionTreeClassifier
+from interval_pattern import Segment, Pattern, Object
 
 random_seed = 1312562
 random.seed(random_seed)
@@ -244,3 +245,77 @@ def print_explanation(tree, o, local_samples, local_predictions, weights):
 
 print_explanation(tree, o, local_samples, local_predictions, weights)
 
+INF = float("inf")
+
+
+def path_to_pattern(path):
+    segments = []
+    for i in range(len(o.features)):
+        segments.append(Segment(-INF, INF))
+    for node in path:
+        if node.left:
+            segments[node.ind].r = min(segments[node.ind].r, node.gr)
+        else:
+            segments[node.ind].l = max(segments[node.ind].l, np.nextafter(node.gr, INF))
+
+    return Pattern(segments)
+
+
+def contains_object_pattern(p, z):
+    for i in range(len(p.segments)):
+        if not p.segments[i].is_point_in(z.features[i]):
+            return False
+    return True
+
+
+def extent_pattern(p, local_samples):
+    ans = []
+    for z in local_samples:
+        if contains_object_pattern(p, z):
+            ans.append(z)
+
+    return ans
+
+
+def reduct_params(p1, need_extent):
+    ind = -1
+    for seg in p1.segments:
+        ind += 1
+        pl = seg.l
+        pr = seg.r
+        p1.segments[ind].l = -INF
+        p1.segments[ind].r = INF
+        nxt_extent = extent_pattern(p1, local_samples)
+        if nxt_extent != need_extent:
+            p1.segments[ind].l = pl
+            p1.segments[ind].r = pr
+
+
+path = get_path(tree, o)
+
+p = path_to_pattern(path)
+
+p1 = Pattern([
+    Segment(seg.l, seg.r)
+    for seg in p.segments
+])
+
+need_extent = extent_pattern(p1, local_samples)
+
+reduct_params(p1, need_extent)
+
+print("Reduced explanation:")
+
+cnt_expl = 0
+
+for i in range(len(p1.segments)):
+    if p1.segments[i].l != -INF or p1.segments[i].r != INF:
+        print(
+            "feature:",
+            i + 1,
+            p1.segments[i].l,
+            p1.segments[i].r
+        )
+        cnt_expl += 1
+
+print("Explanation length:", cnt_expl)

@@ -40,3 +40,4 @@ However with Decision Tree got this object <br>
 - Support:  394
 - Coverage: 0.3940
 - Purity:   0.0614
+14. Took sigma = 1.2, ESS = 103.20507853603021. I think it is median, that i want to work with
