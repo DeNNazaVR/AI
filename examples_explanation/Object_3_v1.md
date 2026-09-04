@@ -4,7 +4,7 @@
 - Число candidate patterns: 466
 - Минимальный purity для включения в candidate_explanation: 0.6
 - Минимальный support для включения в candidate_explanation: 375
-
+- ESS: 1.1179602068043952
 
 ### Объект
 

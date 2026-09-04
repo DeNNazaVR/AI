@@ -334,8 +334,8 @@ def get_final_explanation(g, need_purity, need_support):
 
 feature_std = np.std(x_train, axis=0)
 
-test_ind = 43
-o = Object(x_test[test_ind].tolist())
+test_ind = 141
+o = Object(x_train[test_ind].tolist())
 
 local_samples = gen_neighboors(o, feature_std)
 dist = get_dist(o, local_samples, feature_std)
@@ -351,6 +351,16 @@ for obj in local_samples:
     local_predictions.append(model.predict([obj.features])[0])
 
 weights = get_weights(dist, 2)
+
+
+s1 = 0
+s2 = 0
+for i in weights:
+    s1 += i
+    s2 += i * i
+s1 *= s1
+ess = s1 / s2
+print("ess is: ", ess)
 
 candidate_patterns = build_candidate_patterns(o, local_samples)
 candidate_patterns = get_useful_candidate_patterns(candidate_patterns)

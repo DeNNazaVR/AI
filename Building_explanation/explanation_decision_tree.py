@@ -157,6 +157,14 @@ local_features = np.array(local_features)
 local_predictions = model.predict(local_features)
 weights = get_weights(dist, 2)
 
+s1 = 0
+s2 = 0
+for i in weights:
+    s1 += i
+    s2 += i * i
+s1 *= s1
+ess = s1 / s2
+print("ess is: ", ess)
 
 tree = DecisionTreeClassifier(
     max_depth=3,
