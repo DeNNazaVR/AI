@@ -295,7 +295,7 @@ def visualize_local_generalization_graph(g, explanation=None):
     plt.tight_layout()
     plt.show()
 
-need_purity = 0.6
+need_purity = 0.7
 need_support = 15
 
 def get_final_explanation(g, need_purity, need_support):
@@ -334,7 +334,7 @@ def get_final_explanation(g, need_purity, need_support):
 
 feature_std = np.std(x_train, axis=0)
 
-test_ind = 141
+test_ind = 198
 o = Object(x_train[test_ind].tolist())
 
 local_samples = gen_neighboors(o, feature_std)
@@ -360,7 +360,7 @@ for i in weights:
     s2 += i * i
 s1 *= s1
 ess = s1 / s2
-print("ess is: ", ess)
+print("ESS: ", ess)
 
 our_class = f(o)
 weighted_sum = 0

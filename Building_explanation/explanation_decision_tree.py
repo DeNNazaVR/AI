@@ -138,8 +138,8 @@ def calc_purity(tree, local_samples, local_predictions, weights, o):
 
 feature_std = np.std(x_train, axis=0)
 
-test_ind = 141
-o = Object(x_train[test_ind].tolist())
+test_ind = 43
+o = Object(x_test[test_ind].tolist())
 
 local_samples = gen_neighboors(o, feature_std)
 dist = get_dist(o, local_samples, feature_std)
@@ -165,7 +165,7 @@ for i in weights:
     s2 += i * i
 s1 *= s1
 ess = s1 / s2
-print("ess is: ", ess)
+print("ESS: ", ess)
 
 our_class = f(o)
 weighted_sum = 0
@@ -186,7 +186,7 @@ print("local_neighborhood_unweighted", local_neighborhood_unweighted)
 
 
 tree = DecisionTreeClassifier(
-    max_depth=3,
+    max_depth=10,
     random_state=random_seed
 )
 
