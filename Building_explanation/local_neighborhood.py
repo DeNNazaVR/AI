@@ -4,7 +4,7 @@ from interval_pattern import *
 
 
 
-def gen_neighboors(x, feature_std, n_samples=1000,sigma=3,seed=1312562):
+def gen_neighboors(x, feature_std, n_samples=1000,sigma=1,seed=1312562):
     rng = np.random.default_rng(seed)
     noise = rng.normal(
         loc=0,

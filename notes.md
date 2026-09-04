@@ -31,3 +31,12 @@ Support: 24
 Coverage: 0.024
 Purity: 0.9999898483616381
 Predicted class: 0
+13. Trying to increase ESS, taken sigma = 1 and ESS = 229.55523389531737.
+Got object:
+- Support: 21
+- Coverage: 0.021
+- Purity: 0.7321598722859964 <br>
+However with Decision Tree got this object <br>
+- Support:  394
+- Coverage: 0.3940
+- Purity:   0.0614
